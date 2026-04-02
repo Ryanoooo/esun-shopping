@@ -1,11 +1,22 @@
+# Secrets
+.env
+
 # Maven
+backend/target/
 backend/*/target/
+HELP.md
 
 # Node
-
 frontend/node_modules/
 frontend/dist/
 
 # IDE
 .vscode/
+.idea/
 *.iml
+
+# OS
+.DS_Store
+
+# Logs
+*.log

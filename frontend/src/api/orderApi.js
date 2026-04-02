@@ -1,8 +1,6 @@
-import axios from 'axios'
+import api from './index'
 
-const api = axios.create({
-  baseURL: 'http://localhost:8080/api/v1'
-})
-
-export const createOrder = (orderData) => api.post('/orders', orderData)
-export const getAllOrders = () => api.get('/orders')
+export const getMyOrders      = ()                      => api.get('/orders')
+export const createOrder      = (orderData)             => api.post('/orders', orderData)
+export const getAllOrders      = ()                      => api.get('/admin/orders')
+export const updatePayStatus  = (orderId, payStatus)    => api.patch(`/admin/orders/${orderId}/pay-status`, null, { params: { payStatus } })

@@ -1,8 +1,4 @@
-import axios from 'axios'
+import api from './index'
 
-const api = axios.create({
-  baseURL: 'http://localhost:8080/api/v1'
-})
-
-export const getProductsInStock = () => api.get('/products/in-stock')
-export const addProduct = (product) => api.post('/products', product)
+export const getProductsInStock = ()        => api.get('/products/in-stock')
+export const addProduct         = (product) => api.post('/products', product)
