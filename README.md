@@ -4,6 +4,23 @@
 
 ---
 
+## 目錄
+
+- [系統簡介](#系統簡介)
+- [功能說明](#功能說明)
+- [快速啟動（Docker Compose）](#快速啟動docker-compose)
+- [系統架構](#系統架構)
+- [技術棧](#技術棧)
+- [後端層次架構](#後端層次架構)
+- [資料庫設計](#資料庫設計)
+- [RESTful API](#restful-api)
+- [安全性設計](#安全性設計)
+- [本地開發（不使用 Docker Compose）](#本地開發不使用-docker-compose)
+- [專案結構](#專案結構)
+- [開發者](#開發者)
+
+---
+
 ## 系統簡介
 
 實作一個簡易電商購物中心平台，包含會員驗證、商品管理與訂單管理功能，採用三層式架構設計，並透過角色權限（Admin / Member）區分操作範圍。
@@ -24,6 +41,55 @@
 - 即時顯示各商品金額小計及訂單總金額
 - 建立訂單後自動扣減商品庫存
 - 查看自己的歷史訂單（含付款狀態、訂單明細）
+
+---
+
+## 快速啟動（Docker Compose）
+
+### 環境需求
+
+- Docker & Docker Compose
+
+### 1. 建立環境變數檔
+
+在專案根目錄建立 `.env` 檔：
+
+```env
+DB_USER=esun_user
+DB_PASS=esun_pass
+JWT_SECRET=esun-shopping-secret-key-change-in-production-at-least-32-chars
+JWT_EXPIRATION=86400000
+CORS_ALLOWED_ORIGINS=http://localhost:5173
+```
+
+### 2. 啟動所有服務
+
+```bash
+docker compose up --build
+```
+
+| 服務 | 網址 |
+|------|------|
+| 前端（Vue.js） | http://localhost:5173 |
+| 後端（Spring Boot） | http://localhost:8080 |
+| PostgreSQL | localhost:5432 |
+
+### 3. 初始帳號
+
+| 角色 | Email | 密碼 |
+|------|-------|------|
+| 管理員 | admin@esun.com | admin1234 |
+| 測試會員 1 | member1@esun.com | member1234 |
+| 測試會員 2 | member2@esun.com | member1234 |
+| 測試會員 3 | member3@esun.com | member1234 |
+
+> 一般會員亦可透過系統註冊頁面自行建立帳號。
+
+### 重置資料庫
+
+```bash
+docker compose down -v && docker compose up --build
+```
 
 ---
 
@@ -196,55 +262,6 @@ DB/
 - 建立訂單時同時寫入 `orders`、`order_detail`、扣減 `product` 庫存
 - Service 層標記 `@Transactional`，任一步驟失敗自動 Rollback
 - SP 內使用 `FOR UPDATE` 鎖定商品列，防止超賣（Race Condition）
-
----
-
-## 快速啟動（Docker Compose）
-
-### 環境需求
-
-- Docker & Docker Compose
-
-### 1. 建立環境變數檔
-
-在專案根目錄建立 `.env` 檔：
-
-```env
-DB_USER=esun_user
-DB_PASS=esun_pass
-JWT_SECRET=esun-shopping-secret-key-change-in-production-at-least-32-chars
-JWT_EXPIRATION=86400000
-CORS_ALLOWED_ORIGINS=http://localhost:5173
-```
-
-### 2. 啟動所有服務
-
-```bash
-docker compose up --build
-```
-
-| 服務 | 網址 |
-|------|------|
-| 前端（Vue.js） | http://localhost:5173 |
-| 後端（Spring Boot） | http://localhost:8080 |
-| PostgreSQL | localhost:5432 |
-
-### 3. 初始帳號
-
-| 角色 | Email | 密碼 |
-|------|-------|------|
-| 管理員 | admin@esun.com | admin1234 |
-| 測試會員 1 | member1@esun.com | member1234 |
-| 測試會員 2 | member2@esun.com | member1234 |
-| 測試會員 3 | member3@esun.com | member1234 |
-
-> 一般會員亦可透過系統註冊頁面自行建立帳號。
-
-### 重置資料庫
-
-```bash
-docker compose down -v && docker compose up --build
-```
 
 ---
 
